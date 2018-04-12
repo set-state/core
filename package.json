@@ -1,0 +1,70 @@
+{
+  "name": "@set-state/core",
+  "version": "0.0.0",
+  "main": "dist/core.js",
+  "umd:main": "dist/core.umd.js",
+  "module": "dist/core.m.js",
+  "source": "src/core.js",
+  "scripts": {
+    "prebuild": "npm run lint",
+    "build": "microbundle",
+    "postbuild": "bundlesize",
+    "cover": "nyc report --reporter=text-lcov | coveralls",
+    "cover:dev": "nyc report --reporter=html",
+    "dev": "microbundle watch",
+    "lint": "eslint src",
+    "prerelease": "git checkout master; git pull origin master",
+    "release": "standard-version",
+    "postrelease": "git push --follow-tags origin master && npm publish",
+    "pretest": "npm run build && npm run test:doc",
+    "test:doc": "jsmd README.md",
+    "test:dev": "tape -r esm test/**/*.js | tap-spec",
+    "test": "nyc tape -r esm test/**/*.js | tap-spec"
+  },
+  "keywords": [
+    "set-state"
+  ],
+  "private": false,
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/set-state/core.git"
+  },
+  "author": "Paul <pgrenier@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/set-state/core/issues"
+  },
+  "homepage": "https://github.com/set-state/core#readme",
+  "devDependencies": {
+    "babel-preset-env": "^1.6.1",
+    "bundlesize": "^0.17.0",
+    "coveralls": "^3.0.0",
+    "cross-env": "^5.1.4",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "esm": "^3.0.18",
+    "jsmd": "^1.0.0",
+    "microbundle": "^0.4.4",
+    "nyc": "^11.6.0",
+    "prettier": "^1.12.0",
+    "standard-version": "^4.3.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.9.0"
+  },
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "dependencies": {},
+  "description": "",
+  "bundlesize": [
+    {
+      "path": "./dist/core.js",
+      "maxSize": "1Kb"
+    }
+  ]
+}

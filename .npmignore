@@ -1,0 +1,8 @@
+#tests
+test
+
+#build tools
+.travis.yml
+
+#linters
+.prettierrc.js
