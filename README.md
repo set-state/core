@@ -18,16 +18,17 @@ After using Redux, I looked for a simpler approach for some of my work. I also w
 
 `npm install --save @set-state/core`
 
-## How to use it
-
-We use three main types of functions: [`factory`](#factory), [`state`](#state), and [`node`](#node). Factories create states and states create nodes. Nodes make up the heart of `@set-state` by creating a graph/tree structure and updating themselves effeciently when one of their dependencies change.
-
-Other types of functions, [`plugin`](#plugin), [`listener`](#listener), and [`projection`](#projection), allow you to modify the behavior of nodes and respond to changes in their values with application logic, like rendering.
-
-<!-- js
+```js
+// import factory, {state} from '@set-state/core'
 const factory = require('./dist/core')
 const state = factory.state
--->
+```
+
+## How to use it
+
+`@set-state` uses three main types of functions: [`factory`](#factory), [`state`](#state), and [`node`](#node). Factories create states and states create nodes. Nodes make up the heart of `@set-state` by creating a graph/tree structure and updating themselves effeciently when one of their dependencies change.
+
+Other types of functions, [`plugin`](#plugin), [`listener`](#listener), and [`projection`](#projection), allow you to modify the behavior of nodes and respond to changes in their values with application logic, like rendering.
 
 ```js
 // Stateful variables are just JS values wrapped with a `state` call.
@@ -74,19 +75,6 @@ c() // => 3
 Factory functions, like the default export of `core`, can create [`state`](#state) functions that use any number of custom [plugins](#plugin). You can pass a [`factory`](#factory) a `context` which can be used to differentiate [`state`](#state) or [`node`](#node) functions.
 
 ```js
-// For most applications, you'll only need a single context
-// but creating a separate graph (like for a web worker) allows for
-// separate graphs to maintain their own synchonous graphs.
-const workerState = factory('worker')
-workerState.context // => 'worker'
-const w1 = workerState(1)
-w1() // => 1
-w1.context // => 'worker'
-workerState.isOwnNode(w1) // => true
-state.isOwnNode(w1) // => false
-```
-
-```js
 factory
 /*
 { [Function: factory]
@@ -96,6 +84,20 @@ factory
    ...
    context: 'set-state:core' }}
 */
+
+// For most applications, you'll only need a single context
+// but creating a separate graph (like for a web worker) allows for
+// separate graphs to maintain their own synchonous graphs.
+state.context // => 'set-state:core'
+const workerState = factory('worker')
+workerState.context // => 'worker'
+const w1 = workerState(1)
+w1() // => 1
+w1.context // => 'worker'
+workerState.isOwnNode(w1) // => true
+state.isNode(w1) // => true
+state.isNode(w1()) // => false
+state.isOwnNode(w1) // => false
 ```
 
 ### State
@@ -179,6 +181,11 @@ const myPlugin = node => {
     // throw new Error(`unable to use plugin: ${name}, namespace in use.`)
   }
 }
+
+// You can interact with the plugins added
+state.plugins.size // => 1
+serializableState.plugins.has(toJSON) // => true
+typedState.plugins.clear()
 ```
 
 ### Node
@@ -244,17 +251,20 @@ e1() // => 1
 
 A listener gets called when a change occurs on the node it is attached to. When called, a listener recieves `nextValue` and `previousValue` as parameters.
 
+<!-- js
+const root = {innerHTML: ''}
+-->
+
 ```js
 const l0 = state('#foo')
 const l1 = state('foo')
 const link = state((href = l0(), text = l1()) => ({href, text}))
-const body = {innerHTML: ''}
 const render = ({href, text}) => {
-  body.innerHTML = `<a href="${href}">${text}</a>`
+  root.innerHTML = `<a href="${href}">${text}</a>`
 }
 link.on(render)
 // listeners only fire on change
-body.innerHTML // => ''
+root.innerHTML // => ''
 l1('bar')
-body.innerHTML // => '<a href="#foo">bar</a>'
+root.innerHTML // => '<a href="#foo">bar</a>'
 ```

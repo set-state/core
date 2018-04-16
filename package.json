@@ -13,7 +13,7 @@
     "cover:dev": "nyc report --reporter=html",
     "dev": "microbundle watch",
     "lint": "eslint src",
-    "prerelease": "git checkout master; git pull origin master",
+    "prerelease": "git checkout master && git pull origin master",
     "release": "standard-version",
     "postrelease": "git push --follow-tags origin master && npm publish",
     "pretest": "npm run build && npm run test:doc",
@@ -22,7 +22,10 @@
     "test": "nyc tape -r esm test/**/*.js | tap-spec"
   },
   "keywords": [
-    "set-state"
+    "set-state",
+    "functional",
+    "state management",
+    "reactive"
   ],
   "private": false,
   "publishConfig": {
@@ -55,12 +58,8 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.9.0"
   },
-  "directories": {
-    "doc": "doc",
-    "test": "test"
-  },
   "dependencies": {},
-  "description": "",
+  "description": "state management in less than 1k",
   "bundlesize": [
     {
       "path": "./dist/core.js",
