@@ -6,13 +6,13 @@
 [![Build Status](https://travis-ci.org/set-state/core.svg?branch=master)](https://travis-ci.org/set-state/core)
 [![Coverage Status](https://coveralls.io/repos/github/set-state/core/badge.svg?branch=master)](https://coveralls.io/github/set-state/core?branch=master)
 
-state management in less than 1k
+state management in less than 1 Kb
 
 By Paul Grenier (@AutoSponge)
 
-After using Redux, I looked for a simpler approach for some of my work. I also wanted the flexibiliy to manage state at the component level rather than the app level. I wanted to keep the reactive aspects that I liked in Redux, but be able to react to smaller, scoped changes (like a cursor).
+After using Redux, I looked for a simpler approach for some of my work. I also wanted the flexibility to manage state at the part level rather than the app level. I wanted to keep the reactive aspects that I liked in Redux, but be able to react to smaller, scoped changes (like a cursor).
 
-[`@set-state`](https://github.com/set-state/core) creates state management systems by synchronously updating dependencies and dependants when state changes. It was heavily inspired by [PureState](https://github.com/MaiaVictor/PureState). `@set-state/core` was designed to provide a minimumly viable API with maximum flexibility for you to create your own types of systems.
+[`@set-state`](https://github.com/set-state/core) helps you simplify state management. In `@set-state`, changes are synchronous. This makes app logic easier to write and understand. It was heavily inspired by [PureState](https://github.com/MaiaVictor/PureState). `@set-state/core` was designed to be small yet flexible so you can create your own types of systems.
 
 ## Getting Started
 
@@ -26,9 +26,15 @@ const state = factory.state
 
 ## How to use it
 
-`@set-state` uses three main types of functions: [`factory`](#factory), [`state`](#state), and [`node`](#node). Factories create states and states create nodes. Nodes make up the heart of `@set-state` by creating a graph/tree structure and updating themselves effeciently when one of their dependencies change.
+`@set-state` uses three main types of functions:
 
-Other types of functions, [`plugin`](#plugin), [`listener`](#listener), and [`projection`](#projection), allow you to modify the behavior of nodes and respond to changes in their values with application logic, like rendering.
+- [`factory`](#factory)
+- [`state`](#state)
+- [`node`](#node)
+
+Factories create states and states create nodes. Nodes make up the heart of `@set-state`. When nodes read the values of other nodes, they create a graph/tree structure. This tree will update "downstream" nodes when "upstream" nodes change.
+
+Other types of functions, [`plugin`](#plugin), [`listener`](#listener), and [`projection`](#projection), allow you to change the behavior of nodes and respond to changes in value.
 
 ```js
 // Stateful variables are just JS values wrapped with a `state` call.
@@ -57,7 +63,7 @@ x() // => 10
 y() // => 11
 z() // => [10, 11, 21]
 
-// If you use branching logic in a stateful variable, set the dependencies as default parameters to avoid issues with the dependency tree not updating
+// If you use branching logic in a stateful variable, set the dependencies as default arguments to avoid issues with the dependency tree not updating
 const a = state(true)
 const b = state(2)
 const c = state(($b = b()) => a() ? 1 : $b)
@@ -102,7 +108,7 @@ state.isOwnNode(w1) // => false
 
 ### State
 
-State functions, like the named `state` export of `core`, can create [`node`](#node) functions. By composing states and reacting to changes, you can create sophisticated applications.
+State functions, like the named `state` export of `core`, create [`node`](#node) functions. Create complex apps by composing state nodes and reacting to changes.
 
 ```js
 state
@@ -130,7 +136,7 @@ state
 
 ### Plugin
 
-Factories can also take a list of plugins. Plugins run like middleware when new nodes are created. You can also add individual plugins to a state later with the `.use()` method. Plugins take [`node`](#node) as a parameter. Most plugins will attach functionality to the node (like a serialize method) or create new, dependant nodes called [`projections`](#projection). But you're not limited to those actions.
+Factories can also take a list of plugins. Plugins run like [middleware](https://en.wikipedia.org/wiki/Middleware) when new nodes are created. You can also add individual plugins to a state later using the `.use()` method. Plugins take [`node`](#node) as a parameter. Most plugins will attach methods to the node (like a serialize method) or create new, dependent nodes called [`projections`](#projection). But you're not limited to those actions.
 
 ```js
 // Create a JSON serializer.
@@ -190,7 +196,7 @@ typedState.plugins.clear()
 
 ### Node
 
-Nodes have several properties which help them maintain values across a context. You can also use these properties when writing your own plugins.
+Nodes properties help keep values consistent across a context. You can also use these properties when writing your own plugins.
 
 ```js
 state(0)
@@ -219,7 +225,7 @@ state(0)
 
 ### Projection
 
-Projections are special nodes. By convention, all projections depend on at least one other node for their value and are "sealed". This means that the function used to calculate their value can not be changed once they are created.
+Projections are special nodes. By convention, all projections depend on at least one other node for their value and are "sealed". This means that the `function` used to calculate their value can not be changed after they are created.
 
 ```js
 const p0 = state('beep')
@@ -249,7 +255,7 @@ e1() // => 1
 
 ### Listener
 
-A listener gets called when a change occurs on the node it is attached to. When called, a listener recieves `nextValue` and `previousValue` as parameters.
+A listener gets called when a change occurs on the node attached to it. When called, a listener receives `nextValue` and `previousValue` as arguments.
 
 <!-- js
 const root = {innerHTML: ''}
