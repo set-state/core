@@ -48,10 +48,12 @@
     "bundlesize": "^0.17.0",
     "coveralls": "^3.0.0",
     "dictionary-en-us": "^2.0.0",
+    "documentation": "^6.3.0",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
     "esm": "^3.0.18",
+    "fast-glob": "^2.2.0",
     "jsmd": "^1.0.0",
     "microbundle": "^0.4.4",
     "nyc": "^11.6.0",
@@ -71,11 +73,17 @@
     "standard-version": "^4.3.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.9.0",
+    "to-vfile": "^2.2.0",
     "unified": "^6.1.6",
     "vfile-reporter": "^4.0.0"
   },
   "dependencies": {},
   "description": "state management in less than 1 Kb",
+  "standard-version": {
+    "scripts": {
+      "precommit": "documentation build src/core.js -f html -o docs"
+    }
+  },
   "bundlesize": [
     {
       "path": "./dist/core.js",
