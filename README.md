@@ -1,10 +1,12 @@
 # @set-state/core
 
-[![Codestyle Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Standard Version](https://img.shields.io/badge/release-standard%20version-brightgreen.svg)](https://github.com/conventional-changelog/standard-version)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![npm version](https://img.shields.io/npm/v/@set-state/core.svg)](https://www.npmjs.com/package/@set-state/core)
 [![Build Status](https://travis-ci.org/set-state/core.svg?branch=master)](https://travis-ci.org/set-state/core)
 [![Coverage Status](https://coveralls.io/repos/github/set-state/core/badge.svg?branch=master)](https://coveralls.io/github/set-state/core?branch=master)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+[![Codestyle Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![Standard Version](https://img.shields.io/badge/release-standard%20version-brightgreen.svg)](https://github.com/conventional-changelog/standard-version)
+[![conduct][https://img.shields.io/badge/code%20of%20conduct-contributor%20covenant-green.svg?style=flat-square]][http://contributor-covenant.org/version/1/4/]
 
 state management in less than 1 Kb
 
